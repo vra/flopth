@@ -12,7 +12,7 @@ or
 sudo pip install flopth
 ```
 
-# Use example
+# Use examples
 ## cli tool
 ```bash
 # Example1
@@ -35,7 +35,7 @@ print(sum_flops)
 ```
 ### Example2
 ```python
-from flopth import flops
+from flopth import flopth
 import torch.nn as nn
 
 
@@ -55,11 +55,11 @@ class TwoLinear(nn.Module):
 
 m = TwoLinear()
 
-sum_flops = flops.flops(m, in_size=[10], extra_params=233)
-print(sum_flops
+sum_flops = flopth.flopth(m, in_size=[10], extra_params=233)
+print(sum_flops)
 ```
 
-# Known iusses
+# Known issues
  1. When use a module more than one time during `forward`, the FLOPs calculation is not correct, For example:
  ```python
 import torch.nn as nn
@@ -80,4 +80,4 @@ class Net(nn.Module):
  Will give wrong FLOPs value, because of we use [register_buffer ](https://pytorch.org/docs/stable/_modules/torch/nn/modules/module.html#Module.register_buffer), which is bind to a `nn.Module` (in this example, `l1`). 
 
 # Acknowledge
-This program is mostly ispired by [torchstat](https://github.com/Swall0w/torchstat), greate thanks to the creator of it.
+This program is mostly inspired by [torchstat](https://github.com/Swall0w/torchstat), great thanks to the creator of it.
