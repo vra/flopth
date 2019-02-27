@@ -1,7 +1,17 @@
 # flopth
 A simple program to calculate the FLOPs of Pytorch models, with cli tool and API.
 
-flopth can run in CPU mode and GPU mode. multi-gpu is also supported. Also, flopth support extra parameters in model's `forward` function. Besides, flopth support python3.5, while some other tools only support python3.6+.
+flopth can run in CPU mode and GPU mode. multi-gpu is also supported. Also, flopth support extra parameters in model's `forward` function. Besides, flopth support python3.5, while some other tools only support python3.6+.  
+
+# Features
+ - Support Python3.5+**
+ - Both CPU and GPU mode are supported
+ - Multi-GPU mode is supported
+ - Support extra parameters in module's `forward` function
+
+# TODOs
+ - [ ] Support multiple inputs
+ - [ ] Support more modules 
 
 # Installation
 ```bash
@@ -16,11 +26,37 @@ sudo pip install flopth
 ## cli tool
 ```bash
 # Example1
-flopth alexnet  # support model names in torchvision.models
+$ flopth alexnet  # support model names in torchvision.models
+module        flops           percent       percent-vis
+------------  --------------  ------------  -------------------------------
+features.0    70.4704 MFlops  9.84851%      #########
+features.1    193.6 KFlops    0.0270564%
+features.2    193.6 KFlops    0.0270564%
+features.3    224.089 MFlops  31.3173%      ###############################
+features.4    139.968 KFlops  0.0195611%
+features.5    139.968 KFlops  0.0195611%
+features.6    112.205 MFlops  15.6811%      ###############
+features.7    64.896 KFlops   0.00906947%
+features.8    149.564 MFlops  20.9021%      ####################
+features.9    43.264 KFlops   0.00604631%
+features.10   99.7235 MFlops  13.9368%      #############
+features.11   43.264 KFlops   0.00604631%
+features.12   43.264 KFlops   0.00604631%
+classifier.0  0.0 Flops       0.0%
+classifier.1  37.7487 MFlops  5.27553%      #####
+classifier.2  4.096 KFlops    0.000572432%
+classifier.3  0.0 Flops       0.0%
+classifier.4  16.7772 MFlops  2.34468%      ##
+classifier.5  4.096 KFlops    0.000572432%
+classifier.6  4.096 MFlops    0.572432%
+
+
+715.543 MFlops
 
 # Example2
 # -p for the path to the python file where MySOATModel defined, -i for input size, -x for extra parameters
-flopth MySOATModel -p /path/to/the/python/file/where/class/MySOATModel/is/defined/models.py -i 3 224 224 -x 1994025
+$ flopth MySOATModel -p /path/to/the/python/file/where/class/MySOATModel/is/defined/models.py -i 3 224 224 -x 1994025
+...
 ```
 
 ## Python API
