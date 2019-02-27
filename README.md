@@ -4,7 +4,7 @@ A simple program to calculate the FLOPs of Pytorch models, with cli tool and API
 flopth can run in CPU mode and GPU mode. multi-gpu is also supported. Also, flopth support extra parameters in model's `forward` function. Besides, flopth support python3.5, while some other tools only support python3.6+.  
 
 # Features
- - Support Python3.5+**
+ - Support Python3.5+
  - Both CPU and GPU mode are supported
  - Multi-GPU mode is supported
  - Support extra parameters in module's `forward` function
@@ -24,8 +24,8 @@ sudo pip install flopth
 
 # Use examples
 ## cli tool
-```bash
 # Example1
+```bash
 $ flopth alexnet  # support model names in torchvision.models
 module        flops           percent       percent-vis
 ------------  --------------  ------------  -------------------------------
@@ -52,8 +52,9 @@ classifier.6  4.096 MFlops    0.572432%
 
 
 715.543 MFlops
-
+```
 # Example2
+```bash
 # -p for the path to the python file where MySOATModel defined, -i for input size, -x for extra parameters
 $ flopth MySOATModel -p /path/to/the/python/file/where/class/MySOATModel/is/defined/models.py -i 3 224 224 -x 1994025
 ...
