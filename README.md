@@ -55,8 +55,8 @@ classifier.6  4.096 MFlops    0.572432%
 ```
 ### Example2
 ```bash
-# -p for the path to the python file where MySOATModel defined, -i for input size, -x for extra parameters
-$ flopth MySOATModel -p /path/to/the/python/file/where/class/MySOATModel/is/defined/models.py -i 3 224 224 -x 1994025
+# -p for the path to the python file where MySOTAModel defined, -i for input size, -x for extra parameters
+$ flopth MySOTAModel -p /path/to/the/python/file/where/class/MySOTAModel/is/defined/models.py -i 3 224 224 -x 1994025
 ...
 ```
 
