@@ -24,7 +24,7 @@ sudo pip install flopth
 
 # Use examples
 ## cli tool
-# Example1
+### Example1
 ```bash
 $ flopth alexnet  # support model names in torchvision.models
 module        flops           percent       percent-vis
@@ -53,7 +53,7 @@ classifier.6  4.096 MFlops    0.572432%
 
 715.543 MFlops
 ```
-# Example2
+### Example2
 ```bash
 # -p for the path to the python file where MySOATModel defined, -i for input size, -x for extra parameters
 $ flopth MySOATModel -p /path/to/the/python/file/where/class/MySOATModel/is/defined/models.py -i 3 224 224 -x 1994025
