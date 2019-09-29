@@ -92,7 +92,7 @@ class TwoLinear(nn.Module):
 
 m = TwoLinear()
 
-sum_flops = flopth.flopth(m, in_size=[10], extra_params=233)
+sum_flops = flopth(m, in_size=[10], extra_params=233)
 print(sum_flops)
 ```
 
