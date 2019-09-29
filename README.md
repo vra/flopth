@@ -114,7 +114,7 @@ class Net(nn.Module):
 
         return x
  ```
- Will give wrong FLOPs value, because of we use [register_buffer ](https://pytorch.org/docs/stable/_modules/torch/nn/modules/module.html#Module.register_buffer), which is bind to a `nn.Module` (in this example, `l1`). 
+ Will give wrong FLOPs value, because we use [register_buffer ](https://pytorch.org/docs/stable/_modules/torch/nn/modules/module.html#Module.register_buffer), which is bind to a `nn.Module` (in this example, `l1`). 
 
 # Acknowledge
 This program is mostly inspired by [torchstat](https://github.com/Swall0w/torchstat), great thanks to the creator of it.
