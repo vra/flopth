@@ -3,6 +3,7 @@ import importlib
 import os
 import sys
 
+import numpy as np
 import torch
 import torchvision
 import torchvision.models as models
@@ -56,7 +57,9 @@ def main():
     model = parse_net(args.module_path, args.class_name)
 
     sum_flops = flopth(model, in_size=args.in_size, dtype=args.dtype, param_dict=settings.param_dict, show_detail=args.show_detail, bare_number=args.bare_number)
-    print(sum_flops)
+    param_size = sum(np.prod(v.size()) for v in model.parameters()) / 1e6
+    out_info = 'FLOPs: {}\nParam size: {:.5}M'.format(sum_flops, param_size)
+    print(out_info)
 
 
 def flopth(model, in_size, dtype='float32', param_dict=settings.param_dict, show_detail=False, bare_number=False):
