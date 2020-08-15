@@ -11,6 +11,7 @@ flopth can run in CPU mode and GPU mode. multi-gpu is also supported. Also, flop
 
 # TODOs
  - [x] Support multiple inputs
+ - [x] Add parameter size
  - [ ] Support more modules 
 
 # Installation
@@ -26,7 +27,7 @@ sudo pip install flopth
 ## cli tool
 ### Example1
 ```bash
-$ flopth alexnet  # support model names in torchvision.models
+$ flopth alexnet -i 3 224 224 # support model names in torchvision.models
 module        flops           percent       percent-vis
 ------------  --------------  ------------  -------------------------------
 features.0    70.4704 MFlops  9.84851%      #########
@@ -51,7 +52,8 @@ classifier.5  4.096 KFlops    0.000572432%
 classifier.6  4.096 MFlops    0.572432%
 
 
-715.543 MFlops
+FLOPs: 715.543 MFlops
+Param size: 61.101M
 ```
 ### Example2
 ```bash
