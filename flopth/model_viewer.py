@@ -7,20 +7,21 @@ from flopth.helper import compute_flops
 
 
 class ModelViewer:
-    def __init__(self, model, x, param_dict, dtype='float32', *args):
+    def __init__(self, model, input_list, param_dict, dtype='float32'):
         self._model = model
-        self.args = args
 
         self.leaf_modules, self.leaf_module_names = self.obtain_leaf_modules()
 
         # run register and calculate info
         self.register_parameter(param_dict)
         self.apply_forward_hook()
-        self._model.eval()
         if torch.cuda.is_available():
-            x = x.cuda()
+            for i in range(len(input_list)):
+                input_list[i] = input_list[i].cuda()
+
             self._model = self._model.cuda()
-        self._model(x, *args)
+        self._model.eval()
+        self._model(*input_list)
 #        self.show_results()
 
     def obtain_leaf_modules(self):
@@ -30,8 +31,7 @@ class ModelViewer:
         for n, m in self._model.named_modules():
             if len(list(m.children())) == 0:
                 if not isinstance(m, torch.nn.Module):
-                    print('Module {} is not supported at now.',
-                          'All info about it will be ignored.'.format(n))
+                    print('Module {} is not supported at now. All info about it will be ignored.'.format(n))
                     continue
                 leaf_modules.append(m)
                 leaf_module_names.append(n)

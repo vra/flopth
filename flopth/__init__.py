@@ -22,12 +22,9 @@ def parse_parameters():
     parser.add_argument('-d', '--dtype', default="float32",
                         help="Type of input tensor of target net. default is " +
                         "float32")
-    parser.add_argument('-i', '--in_size', nargs="+", type=int, default=[3, 224, 224],
+    parser.add_argument('-i', '--in_size', nargs="+", type=int, action='append',
                         help="Input size of target net, without batch_size " +
-                        "item, e.g., 3 224 224")
-
-    parser.add_argument('-x', '--extra_params', nargs="+", type=int,
-                        help="Extra parameters for forward function.")
+                        "multiple inputs supported, e.g., -i 3 224 224 -i 3 112 112")
 
     parser.add_argument('--show_detail', default=True, action="store_true")
     parser.add_argument('--bare_number', default=False, action="store_true")
@@ -58,18 +55,18 @@ def main():
 
     model = parse_net(args.module_path, args.class_name)
 
-    sum_flops = flopth(model, in_size=args.in_size, dtype=args.dtype, param_dict=settings.param_dict, extra_params=args.extra_params, show_detail=args.show_detail, bare_number=args.bare_number)
+    sum_flops = flopth(model, in_size=args.in_size, dtype=args.dtype, param_dict=settings.param_dict, show_detail=args.show_detail, bare_number=args.bare_number)
     print(sum_flops)
 
 
-def flopth(model, in_size=[3, 224, 224], dtype='float32', param_dict=settings.param_dict, extra_params=None, show_detail=False, bare_number=False):
+def flopth(model, in_size, dtype='float32', param_dict=settings.param_dict, show_detail=False, bare_number=False):
     dtype = getattr(torch, dtype)
-    x = torch.rand([1, *in_size], dtype=dtype)
+    input_list = []
+    for size in in_size:
+        x = torch.rand([1, *size], dtype=dtype)
+        input_list.append(x)
 
-    if extra_params is not None:
-        mv = ModelViewer(model, x, param_dict, dtype, extra_params)
-    else:
-        mv = ModelViewer(model, x, param_dict, dtype)
+    mv = ModelViewer(model, input_list, param_dict, dtype)
 
     if show_detail:
         mv.show_info(show_detail=True)

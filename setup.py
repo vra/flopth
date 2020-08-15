@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="flopth",
-    version="0.0.1",
+    version="0.0.2",
     keywords=("flopth", "Pytorch", 'Flops', 'Deep-learning'),
     description="A program to calculate FLOPs of Pytorch models",
     long_description="flopth is a program to calculate the FLOPs of Pytorch models, with cli tool and Python API. Support multiple kinds of input, support CPU and GPU, support extra parameters in forward function",

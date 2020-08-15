@@ -1,16 +1,16 @@
 # flopth
 A simple program to calculate the FLOPs of Pytorch models, with cli tool and API.
 
-flopth can run in CPU mode and GPU mode. multi-gpu is also supported. Also, flopth support extra parameters in model's `forward` function. Besides, flopth support python3.5, while some other tools only support python3.6+.  
+flopth can run in CPU mode and GPU mode. multi-gpu is also supported. Also, flopth supports multiple inputs in model's `forward` function. Besides, flopth support python3.5, while some other tools only support python3.6+.  
 
 # Features
  - Support Python3.5+
  - Both CPU and GPU mode are supported
  - Multi-GPU mode is supported
- - Support extra parameters in module's `forward` function
+ - Support multiple inputs in module's `forward` function
 
 # TODOs
- - [ ] Support multiple inputs
+ - [x] Support multiple inputs
  - [ ] Support more modules 
 
 # Installation
@@ -55,8 +55,8 @@ classifier.6  4.096 MFlops    0.572432%
 ```
 ### Example2
 ```bash
-# -p for the path to the python file where MySOTAModel defined, -i for input size, -x for extra parameters
-$ flopth MySOTAModel -p /path/to/the/python/file/where/class/MySOTAModel/is/defined/models.py -i 3 224 224 -x 1994025
+# -p for the path to the python file where MySOTAModel defined, -i for input size, you can use -i multiple times for multiple inputs
+$ flopth MySOTAModel -p /path/to/the/python/file/where/class/MySOTAModel/is/defined/models.py -i 3 224 224 -i 1 224 224
 ...
 ```
 
@@ -92,7 +92,7 @@ class TwoLinear(nn.Module):
 
 m = TwoLinear()
 
-sum_flops = flopth(m, in_size=[10], extra_params=233)
+sum_flops = flopth(m, in_size=[[10], [10]])
 print(sum_flops)
 ```
 
