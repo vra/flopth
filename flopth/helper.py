@@ -18,7 +18,7 @@ def compute_flops(module, inp, out):
     elif isinstance(module, nn.Linear):
         return compute_Linear_flops(module, inp, out)
     else:
-        # print("Op {} is not supported at now.".format(module.__class__.__name__))
+        print("Op {} is not supported at now.".format(module.__class__.__name__))
         return 0
     pass
 
