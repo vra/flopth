@@ -53,7 +53,8 @@ class ModelViewer:
         def forward_with_hook(module, *args, **kwargs):
             # Calulate FLOPs of current module
             output = self.forward_funcs[module.__class__](module, *args, **kwargs)
-            module.flops = torch.from_numpy(np.array(compute_flops(module, *args, output), dtype=np.int64))
+            args_list = list(args)
+            module.flops = torch.from_numpy(np.array(compute_flops(module, args_list, output), dtype=np.int64))
             return output
 
         self.forward_funcs = {}
