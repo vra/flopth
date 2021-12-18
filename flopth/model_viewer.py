@@ -82,7 +82,7 @@ class ModelViewer:
             else:
                 sum_flops += m.flops
         sum_flops = sum_flops.detach().cpu().numpy()[0] if sum_flops.is_cuda else sum_flops.detach().numpy()[0]
-        if show_detail:
+        if show_detail and sum_flops > 0:
             info = []
             for m, n in zip(self.leaf_modules, self.leaf_module_names):
                 flops = m.flops.detach().cpu().numpy() if m.flops.is_cuda else m.flops.detach().numpy()
