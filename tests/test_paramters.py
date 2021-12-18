@@ -1,21 +1,21 @@
 import unittest
 import sys
 
-sys.path.insert(0, '../flopth')
+sys.path.insert(0, "../flopth")
 from flopth import flopth
 
 import torch.nn as nn
 
 
 class ModelWithParams(nn.Module):
-    def __init__(self, i=0, f=0.0, s='', b=True, num=0):
+    def __init__(self, i=0, f=0.0, s="", b=True, num=0):
         super(ModelWithParams, self).__init__()
         self.i = i
         self.f = f
         self.s = s
         self.i = b
         self.num = num
-        if i == 0 and f == 0.0 and s == '' and b:
+        if i == 0 and f == 0.0 and s == "" and b:
             self.conv1 = nn.Conv2d(3, 3, kernel_size=3, padding=1)
             self.conv2 = nn.Conv2d(3, 3, kernel_size=3, padding=1)
 
@@ -41,19 +41,20 @@ class Test(unittest.TestCase):
         pass
 
     def test_model_with_param_num0(self):
-        model = ModelWithParams(0, 0.0, '', True, num=0)
+        model = ModelWithParams(0, 0.0, "", True, num=0)
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '4.21478 MFlops')
+        self.assertEqual(sum_flops, "4.21478 MFlops")
 
     def test_model_with_param_num1(self):
-        model = ModelWithParams(0, 0.0, '', True, num=1)
+        model = ModelWithParams(0, 0.0, "", True, num=1)
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '4.21478 MFlops')
+        self.assertEqual(sum_flops, "4.21478 MFlops")
 
     def test_model_with_param_num2(self):
-        model = ModelWithParams(0, 0.0, '', True, num=2)
+        model = ModelWithParams(0, 0.0, "", True, num=2)
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '8.42957 MFlops')
+        self.assertEqual(sum_flops, "8.42957 MFlops")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

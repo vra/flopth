@@ -1,7 +1,7 @@
 import unittest
 import sys
 
-sys.path.insert(0, '../flopth')
+sys.path.insert(0, "../flopth")
 from flopth import flopth
 
 import torch.nn as nn
@@ -36,13 +36,13 @@ class TestAccurate(unittest.TestCase):
     def test_model_1d(self):
         model = Model1D()
         sum_flops = flopth(model, in_size=(3, 224))
-        self.assertEqual(sum_flops, '22.4 KFlops')
+        self.assertEqual(sum_flops, "22.4 KFlops")
 
     def test_model_3d(self):
         model = Model3D()
         sum_flops = flopth(model, in_size=(3, 1, 224, 224))
-        self.assertEqual(sum_flops, '41.1443 MFlops')
+        self.assertEqual(sum_flops, "41.1443 MFlops")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

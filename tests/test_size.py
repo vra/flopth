@@ -2,8 +2,8 @@ import unittest
 import sys
 import torch.nn as nn
 
-sys.path.insert(0, '../flopth')
-from flopth import flopth # noqa
+sys.path.insert(0, "../flopth")
+from flopth import flopth  # noqa
 
 
 class ModelKernel1(nn.Module):
@@ -52,28 +52,28 @@ class Test(unittest.TestCase):
     def test_model_kernel_1_112(self):
         model = ModelKernel1()
         sum_flops = flopth(model, in_size=(3, 112, 112))
-        self.assertEqual(sum_flops, '155.952 KFlops')
+        self.assertEqual(sum_flops, "155.952 KFlops")
 
     def test_model_kernel_1(self):
         model = ModelKernel1()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '612.912 KFlops')
+        self.assertEqual(sum_flops, "612.912 KFlops")
 
     def test_model_kernel_3(self):
         model = ModelKernel3()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '4.21478 MFlops')
+        self.assertEqual(sum_flops, "4.21478 MFlops")
 
     def test_model_kernel_5(self):
         model = ModelKernel5()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '11.2368 MFlops')
+        self.assertEqual(sum_flops, "11.2368 MFlops")
 
     def test_model_kernel_7(self):
         model = ModelKernel7()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '21.4896 MFlops')
+        self.assertEqual(sum_flops, "21.4896 MFlops")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

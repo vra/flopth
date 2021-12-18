@@ -1,7 +1,7 @@
 import unittest
 import sys
 
-sys.path.insert(0, '../flopth')
+sys.path.insert(0, "../flopth")
 from flopth import flopth
 
 import torch.nn as nn
@@ -16,10 +16,7 @@ class DictOutputModel(nn.Module):
     def forward(self, x):
         x1 = self.conv1(x)
         x2 = self.conv2(x)
-        return {
-            'x1': x1,
-            'x2': x2
-        }
+        return {"x1": x1, "x2": x2}
 
 
 class TupleOutputModel(nn.Module):
@@ -33,8 +30,9 @@ class TupleOutputModel(nn.Module):
         x2 = self.conv2(x)
         return (x1, x2)
 
+
 class MyOutput:
-    def __init__(self, x1,x2):
+    def __init__(self, x1, x2):
         self.x1 = x1
         self.x2 = x2
 
@@ -61,18 +59,18 @@ class Test(unittest.TestCase):
     def test_dict_output_model(self):
         model = DictOutputModel()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '8.42957 MFlops')
+        self.assertEqual(sum_flops, "8.42957 MFlops")
 
     def test_tuple_output_model(self):
         model = TupleOutputModel()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '8.42957 MFlops')
+        self.assertEqual(sum_flops, "8.42957 MFlops")
 
     def test_custom_class_output_model(self):
         model = CustomClassOutputModel()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, '8.42957 MFlops')
+        self.assertEqual(sum_flops, "8.42957 MFlops")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
