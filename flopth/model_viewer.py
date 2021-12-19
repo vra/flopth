@@ -76,6 +76,8 @@ class ModelViewer:
                 m.__class__.__call__ = forward_with_hook
 
     def divide_by_unit(self, value):
+        if isinstance(value, np.ndarray):
+            value = float(value)
         if value > 1e9:
             return "{:.6}G".format(value / 1e9)
         elif value > 1e6:
