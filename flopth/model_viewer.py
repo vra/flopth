@@ -77,12 +77,12 @@ class ModelViewer:
 
     def divide_by_unit(self, value):
         if value > 1e9:
-            return "{:.6} GFlops".format(value / 1e9)
+            return "{:.6}G".format(value / 1e9)
         elif value > 1e6:
-            return "{:.6} MFlops".format(value / 1e6)
+            return "{:.6}M".format(value / 1e6)
         elif value > 1e3:
-            return "{:.6} KFlops".format(value / 1e3)
-        return "{:.6} Flops".format(value / 1.0)
+            return "{:.6}K".format(value / 1e3)
+        return "{:.6}".format(value / 1.0)
 
     def show_info(self, show_detail=True):
         sum_flops = torch.zeros((1), dtype=torch.int64)
