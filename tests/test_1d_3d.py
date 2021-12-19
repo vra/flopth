@@ -26,7 +26,7 @@ class Model3D(nn.Module):
         return self.conv1(x)
 
 
-class TestAccurate(unittest.TestCase):
+class Test(unittest.TestCase):
     def setUp(self):
         pass
 

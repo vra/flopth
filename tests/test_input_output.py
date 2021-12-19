@@ -58,7 +58,7 @@ class MultipleInputMultipleOutputModel(nn.Module):
         return [x1, x2]
 
 
-class TestAccurate(unittest.TestCase):
+class Test(unittest.TestCase):
     def setUp(self):
         pass
 

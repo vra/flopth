@@ -7,7 +7,7 @@ import unittest
 import torchvision.models as models
 
 
-class TestAccurate(unittest.TestCase):
+class Test(unittest.TestCase):
     def setUp(self):
         pass
 

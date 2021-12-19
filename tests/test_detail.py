@@ -9,7 +9,7 @@ import torchvision.models as models
 import cv2
 
 
-class TestAccurate(unittest.TestCase):
+class Test(unittest.TestCase):
     def setUp(self):
         pass
 
