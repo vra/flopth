@@ -27,8 +27,19 @@ def compute_flops(module, inp, out):
         return compute_Linear_flops(module, inp[0], out)
     else:
         print("Op {} is not supported at now.".format(module.__class__.__name__))
-        return 0
+        return cat_out(0, inp[0], out)
     pass
+
+
+def cat_out(total_flops, inp, out):
+    in_size_list = [-1, -1, -1, -1, -1]
+    out_size_list = [-1, -1, -1, -1, -1]
+    for idx, val in enumerate(inp.size()[1:]):
+        in_size_list[idx] = val
+    for idx, val in enumerate(out.size()[1:]):
+        out_size_list[idx] = val
+
+    return [total_flops] + in_size_list +  out_size_list
 
 
 def compute_Conv1d_flops(module, inp, out):
@@ -53,7 +64,7 @@ def compute_Conv1d_flops(module, inp, out):
         bias_flops = out_c * active_elements_count
 
     total_flops = total_conv_flops + bias_flops
-    return total_flops
+    return cat_out(total_flops, inp, out)
 
 
 def compute_Conv2d_flops(module, inp, out):
@@ -78,7 +89,7 @@ def compute_Conv2d_flops(module, inp, out):
         bias_flops = out_c * active_elements_count
 
     total_flops = total_conv_flops + bias_flops
-    return total_flops
+    return cat_out(total_flops, inp, out)
 
 
 def compute_Conv3d_flops(module, inp, out):
@@ -103,7 +114,7 @@ def compute_Conv3d_flops(module, inp, out):
         bias_flops = out_c * active_elements_count
 
     total_flops = total_conv_flops + bias_flops
-    return total_flops
+    return cat_out(total_flops, inp, out)
 
 
 def compute_BatchNorm1d_flops(module, inp, out):
@@ -112,7 +123,7 @@ def compute_BatchNorm1d_flops(module, inp, out):
     batch_flops = np.prod(inp.shape)
     if module.affine:
         batch_flops *= 2
-    return batch_flops
+    return cat_out(batch_flops, inp, out)
 
 
 def compute_BatchNorm2d_flops(module, inp, out):
@@ -121,7 +132,8 @@ def compute_BatchNorm2d_flops(module, inp, out):
     batch_flops = np.prod(inp.shape)
     if module.affine:
         batch_flops *= 2
-    return batch_flops
+    #return batch_flops
+    return cat_out(batch_flops, inp, out)
 
 
 def compute_BatchNorm3d_flops(module, inp, out):
@@ -130,7 +142,8 @@ def compute_BatchNorm3d_flops(module, inp, out):
     batch_flops = np.prod(inp.shape)
     if module.affine:
         batch_flops *= 2
-    return batch_flops
+    #return batch_flops
+    return cat_out(batch_flops, inp, out)
 
 
 def compute_ReLU_flops(module, inp, out):
@@ -141,20 +154,23 @@ def compute_ReLU_flops(module, inp, out):
     for s in inp.size()[1:]:
         active_elements_count *= s
 
-    return active_elements_count
+    #return active_elements_count
+    return cat_out(active_elements_count, inp, out)
 
 
 def compute_Pool2d_flops(module, inp, out):
     assert isinstance(module, nn.MaxPool2d) or isinstance(module, nn.AvgPool2d)
     assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
-    return np.prod(inp.shape)
+    total_flops = np.prod(inp.shape)
+    return cat_out(total_flops, inp, out)
 
 
 def compute_Linear_flops(module, inp, out):
     assert isinstance(module, nn.Linear)
     assert len(inp.size()) == 2 and len(out.size()) == 2
     batch_size = inp.size()[0]
-    return batch_size * inp.size()[1] * out.size()[1]
+    total_flops =  batch_size * inp.size()[1] * out.size()[1]
+    return cat_out(total_flops, inp, out)
 
 
 def compute_Upsample_flops(module, inp, out):
@@ -165,4 +181,5 @@ def compute_Upsample_flops(module, inp, out):
     for s in output_size.shape[1:]:
         output_elements_count *= s
 
-    return output_elements_count
+    total_flops = output_elements_count
+    return cat_out(total_flops, inp, out)

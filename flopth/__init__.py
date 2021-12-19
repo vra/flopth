@@ -14,28 +14,54 @@ from flopth.settings import settings
 
 
 def parse_parameters():
-    parser = argparse.ArgumentParser('A program to calculate FLOPs for pytorch models')
-    parser.add_argument('-p', '--module_path', default=None,
-                        help="Path to the .py file which contains model" +
-                        "definition, e.g., ../lib/my_models.py")
-    parser.add_argument('-n', '--line_number', default=None, type=int,
-                        help="Line number contains model" +
-                        "definition, e.g., 10")
-    parser.add_argument('-m', '--class_name', default=None, type=str,
-                        help="Name of the net to evaluate defined in " +
-                        "modeule_path, e.g., DeepLab")
-    parser.add_argument('-d', '--dtype', default="float32",
-                        help="Type of input tensor of target net. default is " +
-                        "float32")
-    parser.add_argument('-i', '--in_size', nargs="+", type=int, action='append',
-                        help="Input size of target net, without batch_size " +
-                        "multiple inputs supported, e.g., -i 3 224 224 -i 3 112 112")
+    parser = argparse.ArgumentParser("A program to calculate FLOPs for pytorch models")
+    parser.add_argument(
+        "-p",
+        "--module_path",
+        default=None,
+        help="Path to the .py file which contains model"
+        + "definition, e.g., ../lib/my_models.py",
+    )
+    parser.add_argument(
+        "-n",
+        "--line_number",
+        default=None,
+        type=int,
+        help="Line number contains model" + "definition, e.g., 10",
+    )
+    parser.add_argument(
+        "-m",
+        "--class_name",
+        default=None,
+        type=str,
+        help="Name of the net to evaluate defined in " + "modeule_path, e.g., DeepLab",
+    )
+    parser.add_argument(
+        "-d",
+        "--dtype",
+        default="float32",
+        help="Type of input tensor of target net. default is " + "float32",
+    )
+    parser.add_argument(
+        "-i",
+        "--in_size",
+        nargs="+",
+        type=int,
+        action="append",
+        help="Input size of target net, without batch_size "
+        + "multiple inputs supported, e.g., -i 3 224 224 -i 3 112 112",
+    )
 
-    parser.add_argument('-x', '--extra_args', metavar="KEY=VALUE",nargs="+",
-                        help="extra arguments for initialize model")
+    parser.add_argument(
+        "-x",
+        "--extra_args",
+        metavar="KEY=VALUE",
+        nargs="+",
+        help="extra arguments for initialize model",
+    )
 
-    parser.add_argument('--show_detail', default=True, action="store_true")
-    parser.add_argument('--bare_number', default=False, action="store_true")
+    parser.add_argument("--show_detail", default=True, action="store_true")
+    parser.add_argument("--bare_number", default=False, action="store_true")
     return parser.parse_args()
 
 
@@ -49,13 +75,13 @@ def parse_var(s):
     or
         foo="hello world"
     """
-    items = s.split('=')
-    key = items[0].strip() # we remove blanks around keys, as is logical
+    items = s.split("=")
+    key = items[0].strip()  # we remove blanks around keys, as is logical
     if len(items) > 1:
         # rejoin the rest:
-        data_type = items[1].split(':')[0]
+        data_type = items[1].split(":")[0]
         real_type = locate(data_type)
-        data_value = items[1].split(':')[1]
+        data_value = items[1].split(":")[1]
         value = real_type(data_value)
     return (key, value)
 
@@ -74,22 +100,27 @@ def parse_vars(items):
 
 
 def parse_net(module_path, class_name, line_number, extra_args):
-    fail_msg_model_definition = 'You must use ONE of line_number and class_name'
-    assert (class_name == None and line_number != None) or \
-    (class_name != None and line_number == None), fail_msg_model_definition
+    fail_msg_model_definition = "You must use ONE of line_number and class_name"
+    assert (class_name == None and line_number != None) or (
+        class_name != None and line_number == None
+    ), fail_msg_model_definition
 
-    torchvision_models = [m for m in torchvision.models.__dict__.keys() if '__' not in m]
+    torchvision_models = [
+        m for m in torchvision.models.__dict__.keys() if "__" not in m
+    ]
     if class_name in torchvision_models:
         Model = getattr(torchvision.models, class_name)
         model = Model(**extra_args)
     else:
-        fail_msg = 'For the model not in torchvision.models, you have to ' + \
-            'specify the python file where the model is defined.'
+        fail_msg = (
+            "For the model not in torchvision.models, you have to "
+            + "specify the python file where the model is defined."
+        )
         assert module_path is not None, fail_msg
         module_dir = os.path.dirname(module_path)
         sys.path.insert(0, module_dir)
         module_basename = os.path.basename(module_path)
-        module_name = module_basename.split('.')[0]
+        module_name = module_basename.split(".")[0]
         custom_models = importlib.import_module(module_name)
         if class_name is not None:
             Model = getattr(custom_models, class_name)
@@ -97,18 +128,22 @@ def parse_net(module_path, class_name, line_number, extra_args):
             model = Model(**extra_args)
         elif line_number is not None:
             # import all functions in module, need imporve in future
-            import_line = 'from {} import *'.format(module_name)
-            original_line = open(module_path).readlines()[line_number-1].strip()
-            fail_msg_equal_in_line = 'Model definition line must have the format of '+ \
-            '"foo = MyModel(param1=xxx, param2=yyy, ...)", i.e., "=" is needed'
-            assert '=' in original_line, original_line
+            import_line = "from {} import *".format(module_name)
+            original_line = open(module_path).readlines()[line_number - 1].strip()
+            fail_msg_equal_in_line = (
+                "Model definition line must have the format of "
+                + '"foo = MyModel(param1=xxx, param2=yyy, ...)", i.e., "=" is needed'
+            )
+            assert "=" in original_line, original_line
 
             # convert foo = MyModel(param1, param2,...) to model = MyModel(param1, param2...)
-            exec_line = import_line + ';' + 'model =' + '='.join(original_line.split('=')[1:])
+            exec_line = (
+                import_line + ";" + "model =" + "=".join(original_line.split("=")[1:])
+            )
 
             loc = {}
             exec(exec_line, globals(), loc)
-            model = loc['model']
+            model = loc["model"]
             exec(exec_line)
 
     return model
@@ -120,13 +155,27 @@ def main():
     extra_args = parse_vars(args.extra_args)
     model = parse_net(args.module_path, args.class_name, args.line_number, extra_args)
 
-    sum_flops = flopth(model, in_size=args.in_size, dtype=args.dtype, param_dict=settings.param_dict, show_detail=args.show_detail, bare_number=args.bare_number)
+    sum_flops = flopth(
+        model,
+        in_size=args.in_size,
+        dtype=args.dtype,
+        param_dict=settings.param_dict,
+        show_detail=args.show_detail,
+        bare_number=args.bare_number,
+    )
     param_size = sum(np.prod(v.size()) for v in model.parameters()) / 1e6
-    out_info = 'FLOPs: {}\nParam size: {:.5}M'.format(sum_flops, param_size)
+    out_info = "FLOPs: {}\nParam size: {:.5}M".format(sum_flops, param_size)
     print(out_info)
 
 
-def flopth(model, in_size, dtype='float32', param_dict=settings.param_dict, show_detail=False, bare_number=False):
+def flopth(
+    model,
+    in_size,
+    dtype="float32",
+    param_dict=settings.param_dict,
+    show_detail=False,
+    bare_number=False,
+):
     dtype = getattr(torch, dtype)
     input_list = []
     if isinstance(in_size, tuple):
@@ -145,5 +194,5 @@ def flopth(model, in_size, dtype='float32', param_dict=settings.param_dict, show
         return mv.get_info()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

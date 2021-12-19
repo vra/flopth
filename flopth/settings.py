@@ -7,11 +7,7 @@ class Settings:
 
     # parameter dict of info
     param_dict = {
-        'flops': {
-            'text': 'FLOPs',
-            'size': 1,
-            'type': 'long'
-        },
+        "flops": {"text": "FLOPs", "size": 11, "type": "long"},
     }
 
 
