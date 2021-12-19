@@ -59,17 +59,17 @@ class Test(unittest.TestCase):
     def test_dict_output_model(self):
         model = DictOutputModel()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, "8.42957 MFlops")
+        self.assertEqual(sum_flops, "8.42957M")
 
     def test_tuple_output_model(self):
         model = TupleOutputModel()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, "8.42957 MFlops")
+        self.assertEqual(sum_flops, "8.42957M")
 
     def test_custom_class_output_model(self):
         model = CustomClassOutputModel()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, "8.42957 MFlops")
+        self.assertEqual(sum_flops, "8.42957M")
 
 
 if __name__ == "__main__":

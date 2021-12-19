@@ -68,22 +68,22 @@ class TestAccurate(unittest.TestCase):
     def test_one_input_one_output(self):
         model = OneInputOneOutputModel()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, "4.21478 MFlops")
+        self.assertEqual(sum_flops, "4.21478M")
 
     def test_multiple_input_one_output(self):
         model = MultipleInputOneOutputModel()
         sum_flops = flopth(model, in_size=[(3, 224, 224), (3, 224, 224)])
-        self.assertEqual(sum_flops, "4.21478 MFlops")
+        self.assertEqual(sum_flops, "4.21478M")
 
     def test_one_input_mulitple_output(self):
         model = OneInputMultipleOutputModel()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertEqual(sum_flops, "8.42957 MFlops")
+        self.assertEqual(sum_flops, "8.42957M")
 
     def test_multiple_input_mulitple_output(self):
         model = MultipleInputMultipleOutputModel()
         sum_flops = flopth(model, in_size=[(3, 224, 224), (3, 224, 224)])
-        self.assertEqual(sum_flops, "16.8591 MFlops")
+        self.assertEqual(sum_flops, "16.8591M")
 
 
 if __name__ == "__main__":
