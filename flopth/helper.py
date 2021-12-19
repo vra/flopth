@@ -41,7 +41,7 @@ def cat_out(total_flops, inp, out):
     for idx, val in enumerate(out.size()[1:]):
         out_size_list[idx] = val
 
-    return [total_flops] + in_size_list +  out_size_list
+    return [total_flops] + in_size_list + out_size_list
 
 
 def compute_Conv1d_flops(module, inp, out):
@@ -134,7 +134,7 @@ def compute_BatchNorm2d_flops(module, inp, out):
     batch_flops = np.prod(inp.shape)
     if module.affine:
         batch_flops *= 2
-    #return batch_flops
+    # return batch_flops
     return cat_out(batch_flops, inp, out)
 
 
@@ -144,7 +144,7 @@ def compute_BatchNorm3d_flops(module, inp, out):
     batch_flops = np.prod(inp.shape)
     if module.affine:
         batch_flops *= 2
-    #return batch_flops
+    # return batch_flops
     return cat_out(batch_flops, inp, out)
 
 
@@ -156,7 +156,7 @@ def compute_ReLU_flops(module, inp, out):
     for s in inp.size()[1:]:
         active_elements_count *= s
 
-    #return active_elements_count
+    # return active_elements_count
     return cat_out(active_elements_count, inp, out)
 
 
@@ -171,7 +171,7 @@ def compute_Linear_flops(module, inp, out):
     assert isinstance(module, nn.Linear)
     assert len(inp.size()) == 2 and len(out.size()) == 2
     batch_size = inp.size()[0]
-    total_flops =  batch_size * inp.size()[1] * out.size()[1]
+    total_flops = batch_size * inp.size()[1] * out.size()[1]
     return cat_out(total_flops, inp, out)
 
 

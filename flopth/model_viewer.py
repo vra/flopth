@@ -106,22 +106,32 @@ class ModelViewer:
             info = []
             for m, n in zip(self.leaf_modules, self.leaf_module_names):
                 param = str(sum(np.prod(v.size()) for v in m.parameters()))
-                m_type = str(type(m)).split('>')[0].split("class ")[1].strip("'").split('.')[-1]
+                m_type = (
+                    str(type(m))
+                    .split(">")[0]
+                    .split("class ")[1]
+                    .strip("'")
+                    .split(".")[-1]
+                )
                 flops = (
                     m.flops.detach().cpu().numpy()
                     if m.flops.is_cuda
                     else m.flops.detach().numpy()
                 )
 
-#                if flops.ndim > 0:
-#                    flops = flops[0]
+                #                if flops.ndim > 0:
+                #                    flops = flops[0]
 
                 in_shape = flops[1:6]
                 out_shape = flops[6:]
                 flops = flops[0]
 
-                in_shape_str = '(' + ','.join(str(e) for e in in_shape).split('-1')[0][:-1] + ')'
-                out_shape_str = '(' + ','.join(str(e) for e in out_shape).split('-1')[0][:-1] + ')'
+                in_shape_str = (
+                    "(" + ",".join(str(e) for e in in_shape).split("-1")[0][:-1] + ")"
+                )
+                out_shape_str = (
+                    "(" + ",".join(str(e) for e in out_shape).split("-1")[0][:-1] + ")"
+                )
 
                 info.append(
                     [
@@ -131,11 +141,28 @@ class ModelViewer:
                         out_shape_str,
                         param,
                         self.divide_by_unit(flops),
-                        "{:.6}%".format(flops / sum_flops * 100) if sum_flops > 0 else '',
-                        "#" * int(flops / sum_flops * 100) if sum_flops > 0 else '',
+                        "{:.6}%".format(flops / sum_flops * 100)
+                        if sum_flops > 0
+                        else "",
+                        "#" * int(flops / sum_flops * 100) if sum_flops > 0 else "",
                     ]
                 )
-            print(tabulate(info, headers=("module_name", "module_type", "in_shape", "out_shape", "params", "flops", "flops_percent", "flops_percent_vis"), tablefmt="grid"))
+            print(
+                tabulate(
+                    info,
+                    headers=(
+                        "module_name",
+                        "module_type",
+                        "in_shape",
+                        "out_shape",
+                        "params",
+                        "flops",
+                        "flops_percent",
+                        "flops_percent_vis",
+                    ),
+                    tablefmt="grid",
+                )
+            )
             print("\n")
 
             # sum_flops_str = self.divide_by_unit(sum_flops)
