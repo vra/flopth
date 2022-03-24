@@ -12,6 +12,7 @@ flopth can run in CPU mode and GPU mode. multi-gpu is also supported. Also, flop
 # TODOs
  - [x] Support multiple inputs
  - [x] Add parameter size
+ - [x] Add Line number mode 
  - [ ] Support more modules 
 
 # Installation
