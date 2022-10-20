@@ -17,7 +17,9 @@ def compute_flops(module, inp, out):
         return compute_BatchNorm2d_flops(module, inp[0], out)
     elif isinstance(module, nn.BatchNorm3d):
         return compute_BatchNorm3d_flops(module, inp[0], out)
-    elif isinstance(module, (nn.AvgPool2d, nn.MaxPool2d, nn.AdaptiveAvgPool2d, nn.AdaptiveMaxPool2d)):
+    elif isinstance(
+        module, (nn.AvgPool2d, nn.MaxPool2d, nn.AdaptiveAvgPool2d, nn.AdaptiveMaxPool2d)
+    ):
         return compute_Pool2d_flops(module, inp[0], out)
     elif isinstance(module, (nn.ReLU, nn.ReLU6, nn.PReLU, nn.ELU, nn.LeakyReLU)):
         return compute_ReLU_flops(module, inp[0], out)

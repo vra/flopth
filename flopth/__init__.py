@@ -15,7 +15,9 @@ from flopth.utils import divide_by_unit
 
 
 def parse_parameters():
-    parser = argparse.ArgumentParser("A program to calculate FLOPs and #Parameters for pytorch models\n\n\n\n")
+    parser = argparse.ArgumentParser(
+        "A program to calculate FLOPs and #Parameters for pytorch models\n\n\n\n"
+    )
     parser.add_argument(
         "-p",
         "--module_path",
@@ -62,16 +64,17 @@ def parse_parameters():
     )
 
     parser.add_argument(
-        "--show_detail", 
-        default=True, 
+        "--show_detail",
+        default=True,
         action="store_true",
         help="whether to show the detailed information of each layer",
     )
 
     parser.add_argument(
-        "--bare_number", 
-        default=False, 
-        action="store_true"
+        "--bare_number",
+        default=False,
+        action="store_true",
+        help="Show raw number, useful when used in python code",
     )
 
     args = parser.parse_args()
@@ -117,8 +120,7 @@ def parse_vars(items):
 
 def parse_net(module_path, class_name, line_number, extra_args):
     fail_msg_model_definition = "You must use ONE of line_number and class_name"
-    assert not (class_name is None and line_number is None), \
-        fail_msg_model_definition
+    assert not (class_name is None and line_number is None), fail_msg_model_definition
 
     torchvision_models = [
         m for m in torchvision.models.__dict__.keys() if "__" not in m
