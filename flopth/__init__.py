@@ -11,6 +11,7 @@ import torchvision.models as models
 
 from flopth.model_viewer import ModelViewer
 from flopth.settings import settings
+from flopth.utils import divide_by_unit
 
 
 def parse_parameters():
@@ -167,7 +168,6 @@ def parse_net(module_path, class_name, line_number, extra_args):
 def main():
     args = parse_parameters()
 
-
     extra_args = parse_vars(args.extra_args)
     model = parse_net(args.module_path, args.class_name, args.line_number, extra_args)
 
@@ -179,8 +179,12 @@ def main():
         show_detail=args.show_detail,
         bare_number=args.bare_number,
     )
-    param_size = sum(np.prod(v.size()) for v in model.parameters()) / 1e6
-    out_info = "FLOPs: {}\nParam size: {:.5}M".format(sum_flops, param_size)
+
+    param_size = sum(np.prod(v.size()) for v in model.parameters())
+    if not args.bare_number:
+        param_size = divide_by_unit(param_size)
+
+    out_info = "FLOPs: {}\nParam size: {}".format(sum_flops, param_size)
     print(out_info)
 
 

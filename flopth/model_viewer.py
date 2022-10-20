@@ -4,6 +4,7 @@ from tabulate import tabulate
 import torch
 
 from flopth.helper import compute_flops
+from flopth.utils import divide_by_unit
 
 
 class ModelViewer:
@@ -75,17 +76,6 @@ class ModelViewer:
                 self.forward_funcs[m.__class__] = m.__class__.__call__
                 m.__class__.__call__ = forward_with_hook
 
-    def divide_by_unit(self, value):
-        if isinstance(value, np.ndarray):
-            value = float(value)
-        if value > 1e9:
-            return "{:.6}G".format(value / 1e9)
-        elif value > 1e6:
-            return "{:.6}M".format(value / 1e6)
-        elif value > 1e3:
-            return "{:.6}K".format(value / 1e3)
-        return "{:.6}".format(value / 1.0)
-
     def show_info(self, show_detail=True):
         sum_flops = torch.zeros((1), dtype=torch.int64)
         if torch.cuda.is_available():
@@ -142,7 +132,7 @@ class ModelViewer:
                         in_shape_str,
                         out_shape_str,
                         param,
-                        self.divide_by_unit(flops),
+                        divide_by_unit(flops),
                         "{:.6}%".format(flops / sum_flops * 100)
                         if sum_flops > 0
                         else "",
@@ -175,5 +165,5 @@ class ModelViewer:
     def get_info(self, for_human=True):
         flops = self.show_info(show_detail=False)
         if for_human:
-            flops = self.divide_by_unit(flops)
+            flops = divide_by_unit(flops)
         return flops
