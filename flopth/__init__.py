@@ -173,7 +173,7 @@ def main():
     extra_args = parse_vars(args.extra_args)
     model = parse_net(args.module_path, args.class_name, args.line_number, extra_args)
 
-    sum_flops = flopth(
+    sum_flops, sum_params = flopth(
         model,
         in_size=args.in_size,
         dtype=args.dtype,
@@ -182,17 +182,13 @@ def main():
         bare_number=args.bare_number,
     )
 
-    param_size = sum(np.prod(v.size()) for v in model.parameters())
-    if not args.bare_number:
-        param_size = divide_by_unit(param_size)
-
-    out_info = "FLOPs: {}\nParam size: {}".format(sum_flops, param_size)
+    out_info = "FLOPs: {}\nParam size: {}".format(sum_flops, sum_params)
     print(out_info)
 
 
 def flopth(
     model,
-    in_size,
+    in_size=[[3, 224, 224]],
     dtype="float32",
     param_dict=settings.param_dict,
     show_detail=False,

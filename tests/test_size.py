@@ -51,27 +51,27 @@ class Test(unittest.TestCase):
 
     def test_model_kernel_1_112(self):
         model = ModelKernel1()
-        sum_flops = flopth(model, in_size=(3, 112, 112))
+        sum_flops = flopth(model, in_size=(3, 112, 112))[0]
         self.assertEqual(sum_flops, "155.952K")
 
     def test_model_kernel_1(self):
         model = ModelKernel1()
-        sum_flops = flopth(model, in_size=(3, 224, 224))
+        sum_flops = flopth(model, in_size=(3, 224, 224))[0]
         self.assertEqual(sum_flops, "612.912K")
 
     def test_model_kernel_3(self):
         model = ModelKernel3()
-        sum_flops = flopth(model, in_size=(3, 224, 224))
+        sum_flops = flopth(model, in_size=(3, 224, 224))[0]
         self.assertEqual(sum_flops, "4.21478M")
 
     def test_model_kernel_5(self):
         model = ModelKernel5()
-        sum_flops = flopth(model, in_size=(3, 224, 224))
+        sum_flops = flopth(model, in_size=(3, 224, 224))[0]
         self.assertEqual(sum_flops, "11.2368M")
 
     def test_model_kernel_7(self):
         model = ModelKernel7()
-        sum_flops = flopth(model, in_size=(3, 224, 224))
+        sum_flops = flopth(model, in_size=(3, 224, 224))[0]
         self.assertEqual(sum_flops, "21.4896M")
 
 

@@ -35,12 +35,12 @@ class Test(unittest.TestCase):
 
     def test_model_1d(self):
         model = Model1D()
-        sum_flops = flopth(model, in_size=(3, 224))
+        sum_flops = flopth(model, in_size=(3, 224))[0]
         self.assertEqual(sum_flops, "22.4K")
 
     def test_model_3d(self):
         model = Model3D()
-        sum_flops = flopth(model, in_size=(3, 1, 224, 224))
+        sum_flops = flopth(model, in_size=(3, 1, 224, 224))[0]
         self.assertEqual(sum_flops, "41.1443M")
 
 

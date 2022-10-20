@@ -94,10 +94,12 @@ class ModelViewer:
             if sum_flops.is_cuda
             else sum_flops.detach().numpy().item()
         )
+        sum_params = sum(np.prod(v.size()) for v in self._model.parameters())
+
         if show_detail:
             info = []
             for m, n in zip(self.leaf_modules, self.leaf_module_names):
-                param = str(sum(np.prod(v.size()) for v in m.parameters()))
+                param = sum(np.prod(v.size()) for v in m.parameters())
                 m_type = (
                     str(type(m))
                     .split(">")[0]
@@ -131,7 +133,7 @@ class ModelViewer:
                         m_type,
                         in_shape_str,
                         out_shape_str,
-                        param,
+                        divide_by_unit(param),
                         divide_by_unit(flops),
                         "{:.6}%".format(flops / sum_flops * 100)
                         if sum_flops > 0
@@ -160,10 +162,11 @@ class ModelViewer:
             # sum_flops_str = self.divide_by_unit(sum_flops)
             # print('\nTotal FLOPs: {}'.format(sum_flops_str))
 
-        return sum_flops
+        return sum_flops, sum_params
 
     def get_info(self, for_human=True):
-        flops = self.show_info(show_detail=False)
+        flops, params = self.show_info(show_detail=False)
         if for_human:
             flops = divide_by_unit(flops)
-        return flops
+            params = divide_by_unit(params)
+        return flops, params

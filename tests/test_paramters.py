@@ -42,17 +42,17 @@ class Test(unittest.TestCase):
 
     def test_model_with_param_num0(self):
         model = ModelWithParams(0, 0.0, "", True, num=0)
-        sum_flops = flopth(model, in_size=(3, 224, 224))
+        sum_flops = flopth(model, in_size=(3, 224, 224))[0]
         self.assertEqual(sum_flops, "4.21478M")
 
     def test_model_with_param_num1(self):
         model = ModelWithParams(0, 0.0, "", True, num=1)
-        sum_flops = flopth(model, in_size=(3, 224, 224))
+        sum_flops = flopth(model, in_size=(3, 224, 224))[0]
         self.assertEqual(sum_flops, "4.21478M")
 
     def test_model_with_param_num2(self):
         model = ModelWithParams(0, 0.0, "", True, num=2)
-        sum_flops = flopth(model, in_size=(3, 224, 224))
+        sum_flops = flopth(model, in_size=(3, 224, 224))[0]
         self.assertEqual(sum_flops, "8.42957M")
 
 
