@@ -28,7 +28,7 @@ sudo pip install flopth
 # Use examples
 ## cli tool
 ### Example1
-```txt
+```plain
 $ flopth -m alexnet -i 3 224 224 # support model names in torchvision.models
 +---------------+-------------------+-------------+-------------+----------+----------+-----------------+---------------------------------+
 | module_name   | module_type       | in_shape    | out_shape   |   params | flops    | flops_percent   | flops_percent_vis               |
