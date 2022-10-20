@@ -17,7 +17,7 @@ def compute_flops(module, inp, out):
         return compute_BatchNorm2d_flops(module, inp[0], out)
     elif isinstance(module, nn.BatchNorm3d):
         return compute_BatchNorm3d_flops(module, inp[0], out)
-    elif isinstance(module, (nn.AvgPool2d, nn.MaxPool2d)):
+    elif isinstance(module, (nn.AvgPool2d, nn.MaxPool2d, nn.AdaptiveAvgPool2d, nn.AdaptiveMaxPool2d)):
         return compute_Pool2d_flops(module, inp[0], out)
     elif isinstance(module, (nn.ReLU, nn.ReLU6, nn.PReLU, nn.ELU, nn.LeakyReLU)):
         return compute_ReLU_flops(module, inp[0], out)
@@ -161,7 +161,6 @@ def compute_ReLU_flops(module, inp, out):
 
 
 def compute_Pool2d_flops(module, inp, out):
-    assert isinstance(module, nn.MaxPool2d) or isinstance(module, nn.AvgPool2d)
     assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
     total_flops = np.prod(inp.shape)
     return cat_out(total_flops, inp, out)
