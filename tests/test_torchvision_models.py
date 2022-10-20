@@ -17,7 +17,7 @@ class Test(unittest.TestCase):
     def test_alexnet(self):
         alexnet = models.alexnet()
         sum_flops = flopth(alexnet, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "715.543M")
+        self.assertTrue(sum_flops == "715.553M")
 
     def test_densenet121(self):
         model = models.densenet121()
@@ -42,47 +42,47 @@ class Test(unittest.TestCase):
     def test_inception(self):
         model = models.inception_v3()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "2.8485G")
+        self.assertTrue(sum_flops == "2.84855G")
 
     def test_resnet18(self):
         model = models.resnet18()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "1.8214G")
+        self.assertTrue(sum_flops == "1.82142G")
 
     def test_resnet34(self):
         model = models.resnet34()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "3.67422G")
+        self.assertTrue(sum_flops == "3.67425G")
 
     def test_resnet50(self):
         model = models.resnet50()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "4.11854G")
+        self.assertTrue(sum_flops == "4.11864G")
 
     def test_resnet101(self):
         model = models.resnet101()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "7.84441G")
+        self.assertTrue(sum_flops == "7.84451G")
 
     def test_resnet152(self):
         model = models.resnet152()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "11.5735G")
+        self.assertTrue(sum_flops == "11.5736G")
 
     def test_squeeze_1_0(self):
         model = models.squeezenet1_0()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "829.877M")
+        self.assertTrue(sum_flops == "830.046M")
 
     def test_squeeze_1_1(self):
         model = models.squeezenet1_1()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "355.693M")
+        self.assertTrue(sum_flops == "355.862M")
 
     def test_vgg11(self):
         model = models.vgg11()
         sum_flops = flopth(model, in_size=(3, 224, 224))
-        self.assertTrue(sum_flops == "7.63007G")
+        self.assertTrue(sum_flops == "7.6301G")
 
     def test_vgg13(self):
         model = models.vgg13()
