@@ -100,9 +100,9 @@ class ModelViewer:
             else:
                 sum_flops += m.flops[0].item()
         sum_flops = (
-            sum_flops.detach().cpu().numpy()
+            sum_flops.detach().cpu().numpy().item()
             if sum_flops.is_cuda
-            else sum_flops.detach().numpy()
+            else sum_flops.detach().numpy().item()
         )
         if show_detail:
             info = []

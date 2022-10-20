@@ -14,7 +14,7 @@ from flopth.settings import settings
 
 
 def parse_parameters():
-    parser = argparse.ArgumentParser("A program to calculate FLOPs for pytorch models")
+    parser = argparse.ArgumentParser("A program to calculate FLOPs and #Parameters for pytorch models\n\n\n\n")
     parser.add_argument(
         "-p",
         "--module_path",
@@ -27,7 +27,7 @@ def parse_parameters():
         "--line_number",
         default=None,
         type=int,
-        help="Line number contains model" + "definition, e.g., 10",
+        help="Line number contains model" + " definition, e.g., 10",
     )
     parser.add_argument(
         "-m",
@@ -48,7 +48,7 @@ def parse_parameters():
         nargs="+",
         type=int,
         action="append",
-        help="Input size of target net, without batch_size "
+        help="Input size of target net, without batch_size. "
         + "multiple inputs supported, e.g., -i 3 224 224 -i 3 112 112",
     )
 
@@ -60,9 +60,24 @@ def parse_parameters():
         help="extra arguments for initialize model",
     )
 
-    parser.add_argument("--show_detail", default=True, action="store_true")
-    parser.add_argument("--bare_number", default=False, action="store_true")
-    return parser.parse_args()
+    parser.add_argument(
+        "--show_detail", 
+        default=True, 
+        action="store_true",
+        help="whether to show the detailed information of each layer",
+    )
+
+    parser.add_argument(
+        "--bare_number", 
+        default=False, 
+        action="store_true"
+    )
+
+    args = parser.parse_args()
+    if args.line_number is None and args.class_name is None:
+        parser.print_help()
+        sys.exit(0)
+    return args
 
 
 def parse_var(s):
@@ -101,13 +116,13 @@ def parse_vars(items):
 
 def parse_net(module_path, class_name, line_number, extra_args):
     fail_msg_model_definition = "You must use ONE of line_number and class_name"
-    assert (class_name == None and line_number != None) or (
-        class_name != None and line_number == None
-    ), fail_msg_model_definition
+    assert not (class_name is None and line_number is None), \
+        fail_msg_model_definition
 
     torchvision_models = [
         m for m in torchvision.models.__dict__.keys() if "__" not in m
     ]
+
     if class_name in torchvision_models:
         Model = getattr(torchvision.models, class_name)
         model = Model(**extra_args)
@@ -151,6 +166,7 @@ def parse_net(module_path, class_name, line_number, extra_args):
 
 def main():
     args = parse_parameters()
+
 
     extra_args = parse_vars(args.extra_args)
     model = parse_net(args.module_path, args.class_name, args.line_number, extra_args)
