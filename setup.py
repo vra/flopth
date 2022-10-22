@@ -1,11 +1,15 @@
 from setuptools import setup, find_packages
 
+readme = open('README.md').read()
+
 setup(
     name="flopth",
-    version="0.0.4",
+    version="0.1.1",
     keywords=("flopth", "Pytorch", "Flops", "Deep-learning"),
-    description="A program to calculate FLOPs of Pytorch models",
-    long_description="flopth is a program to calculate the FLOPs of Pytorch models, with cli tool and Python API. Support multiple kinds of input, support CPU and GPU, support extra parameters in forward function",
+    description="A program to calculate FLOPs and Parameters of Pytorch models",
+    long_description=readme,
+    long_description_content_type="text/markdown",
+
     license="MIT Licence",
     url="https://github.com/vra/flopth",
     author="Yunfeng Wang",
