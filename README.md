@@ -1,4 +1,16 @@
+<pre align=center style='color:green'>
+
+    ______            __  __  
+   / __/ /___  ____  / /_/ /_ 
+  / /_/ / __ \/ __ \/ __/ __ \
+ / __/ / /_/ / /_/ / /_/ / / /
+/_/ /_/\____/ .___/\__/_/ /_/ 
+           /_/                
+
+</pre>
+
 # flopth
+
 A simple program to calculate the FLOPs and Parameters of Pytorch models, with cli tool and Python API.
 
 # Features
