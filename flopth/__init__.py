@@ -14,6 +14,9 @@ from flopth.settings import settings
 from flopth.utils import divide_by_unit
 
 
+from .__version__ import __version__
+
+
 def parse_parameters():
     parser = argparse.ArgumentParser(
         "A program to calculate FLOPs and #Parameters of pytorch models\n\n"
