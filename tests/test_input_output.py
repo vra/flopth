@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, "../flopth")
 from flopth import flopth
 
+import torch
 import torch.nn as nn
 import torchvision.models as models
 
@@ -70,6 +71,16 @@ class Test(unittest.TestCase):
         sum_flops = flopth(model, in_size=(3, 224, 224))[0]
         self.assertEqual(sum_flops, "4.21478M")
 
+    def test_one_input_one_output_tuple_input(self):
+        model = OneInputOneOutputModel()
+        sum_flops = flopth(model, in_size=((3, 224, 224),))[0]
+        self.assertEqual(sum_flops, "4.21478M")
+
+    def test_one_input_one_output_default_in_size(self):
+        model = OneInputOneOutputModel()
+        sum_flops = flopth(model)[0]
+        self.assertEqual(sum_flops, "4.21478M")
+
     def test_multiple_input_one_output(self):
         model = MultipleInputOneOutputModel()
         sum_flops = flopth(model, in_size=[(3, 224, 224), (3, 224, 224)])[0]
@@ -83,6 +94,23 @@ class Test(unittest.TestCase):
     def test_multiple_input_mulitple_output(self):
         model = MultipleInputMultipleOutputModel()
         sum_flops = flopth(model, in_size=[(3, 224, 224), (3, 224, 224)])[0]
+        self.assertEqual(sum_flops, "16.8591M")
+
+    def test_multiple_input_mulitple_output_list_of_list_input(self):
+        model = MultipleInputMultipleOutputModel()
+        sum_flops = flopth(model, in_size=[[3, 224, 224], [3, 224, 224]])[0]
+        self.assertEqual(sum_flops, "16.8591M")
+
+    def test_multiple_input_mulitple_output_tuple_of_tuple_input(self):
+        model = MultipleInputMultipleOutputModel()
+        sum_flops = flopth(model, in_size=((3, 224, 224), (3, 224, 224)))[0]
+        self.assertEqual(sum_flops, "16.8591M")
+
+    def test_tensor_variable_inputs(self):
+        model = MultipleInputMultipleOutputModel()
+        dummpy_input1 = torch.rand(1, 3, 224, 224)
+        dummpy_input2 = torch.rand(1, 3, 224, 224)
+        sum_flops = flopth(model, inputs=(dummpy_input1, dummpy_input2))[0]
         self.assertEqual(sum_flops, "16.8591M")
 
 

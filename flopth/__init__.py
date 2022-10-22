@@ -190,18 +190,25 @@ def main():
 def flopth(
     model,
     in_size=[[3, 224, 224]],
+    inputs=None,
     dtype="float32",
     param_dict=settings.param_dict,
     show_detail=False,
     bare_number=False,
 ):
     dtype = getattr(torch, dtype)
-    input_list = []
-    if isinstance(in_size, tuple):
-        in_size = [in_size]
-    for size in in_size:
-        x = torch.rand([1, *size], dtype=dtype)
-        input_list.append(x)
+    if inputs is not None:
+        input_list = list(inputs)
+    else:
+        input_list = []
+        if isinstance(in_size, tuple):
+            if isinstance(in_size[0], int):
+                in_size = [in_size]
+            elif isinstance(in_size[0], tuple):
+                in_size = list(in_size)
+        for size in in_size:
+            x = torch.rand([1, *size], dtype=dtype)
+            input_list.append(x)
 
     mv = ModelViewer(model, input_list, param_dict, dtype)
 
