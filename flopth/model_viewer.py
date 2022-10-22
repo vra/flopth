@@ -1,4 +1,4 @@
-""" Main file to calculate infomation of a pytorch model. """
+""" Main file to calculate information of a pytorch model. """
 import numpy as np
 from tabulate import tabulate
 import torch
@@ -62,7 +62,7 @@ class ModelViewer:
 
     def apply_forward_hook(self):
         def forward_with_hook(module, *args, **kwargs):
-            # Calulate FLOPs of current module
+            # Calculate FLOPs of current module
             output = self.forward_funcs[module.__class__](module, *args, **kwargs)
             args_list = list(args)
             module.flops = torch.from_numpy(
@@ -134,11 +134,15 @@ class ModelViewer:
                         in_shape_str,
                         out_shape_str,
                         divide_by_unit(param),
+                        "{:.6}%".format(param / sum_params * 100)
+                        if sum_params > 0
+                        else "",
+                        "#" * int(param / sum_params * 50) if sum_params > 0 else "",
                         divide_by_unit(flops),
                         "{:.6}%".format(flops / sum_flops * 100)
                         if sum_flops > 0
                         else "",
-                        "#" * int(flops / sum_flops * 100) if sum_flops > 0 else "",
+                        "#" * int(flops / sum_flops * 50) if sum_flops > 0 else "",
                     ]
                 )
             print(
@@ -150,6 +154,8 @@ class ModelViewer:
                         "in_shape",
                         "out_shape",
                         "params",
+                        "params_percent",
+                        "params_percent_vis",
                         "flops",
                         "flops_percent",
                         "flops_percent_vis",

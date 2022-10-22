@@ -16,14 +16,13 @@ from flopth.utils import divide_by_unit
 
 def parse_parameters():
     parser = argparse.ArgumentParser(
-        "A program to calculate FLOPs and #Parameters for pytorch models\n\n\n\n"
+        "A program to calculate FLOPs and #Parameters of pytorch models\n\n"
     )
     parser.add_argument(
         "-p",
         "--module_path",
         default=None,
-        help="Path to the .py file which contains model"
-        + "definition, e.g., ../lib/my_models.py",
+        help="Path to a .py file which contains pytorch model definition, e.g., ../lib/my_models.py",
     )
     parser.add_argument(
         "-n",
@@ -37,20 +36,20 @@ def parse_parameters():
         "--class_name",
         default=None,
         type=str,
-        help="Name of the net to evaluate defined in " + "modeule_path, e.g., DeepLab",
+        help="Name of the net to evaluate defined in module_path, e.g., DeepLab",
     )
     parser.add_argument(
         "-d",
         "--dtype",
         default="float32",
-        help="Type of input tensor of target net. default is " + "float32",
+        help="Type of input tensor of target net. default is float32",
     )
     parser.add_argument(
         "-i",
         "--in_size",
         nargs="+",
         type=int,
-        default=[[3, 224, 224]],
+        default=None,
         action="append",
         help="Input size of target net, without batch_size. "
         + "multiple inputs supported, e.g., -i 3 224 224 -i 3 112 112",
@@ -61,14 +60,14 @@ def parse_parameters():
         "--extra_args",
         metavar="KEY=VALUE",
         nargs="+",
-        help="extra arguments for initialize model",
+        help="extra arguments in model's forward function",
     )
 
     parser.add_argument(
         "--show_detail",
         default=True,
         action="store_true",
-        help="whether to show the detailed information of each layer",
+        help="whether to show the detailed flops and params of each layer",
     )
 
     parser.add_argument(
@@ -143,10 +142,9 @@ def parse_net(module_path, class_name, line_number, extra_args):
         custom_models = importlib.import_module(module_name)
         if class_name is not None:
             Model = getattr(custom_models, class_name)
-            print(extra_args)
             model = Model(**extra_args)
         elif line_number is not None:
-            # import all functions in module, need imporve in future
+            # import all functions in module, need improve in future
             import_line = "from {} import *".format(module_name)
             original_line = open(module_path).readlines()[line_number - 1].strip()
             fail_msg_equal_in_line = (
@@ -183,7 +181,7 @@ def main():
         bare_number=args.bare_number,
     )
 
-    out_info = "FLOPs: {}\nParam size: {}".format(sum_flops, sum_params)
+    out_info = "FLOPs: {}\nParams: {}".format(sum_flops, sum_params)
     print(out_info)
 
 
@@ -196,6 +194,9 @@ def flopth(
     show_detail=False,
     bare_number=False,
 ):
+    if in_size is None:
+        in_size = [[3, 224, 224]]
+
     dtype = getattr(torch, dtype)
     if inputs is not None:
         input_list = list(inputs)
