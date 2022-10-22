@@ -2,8 +2,7 @@
 A simple program to calculate the FLOPs and Parameters of Pytorch models, with cli tool and Python API.
 
 # Features
- - 
- - 
+ - Handy cli command to show flops and params quickly
  - Support multiple inputs in model's `forward` function
  - Support Both CPU and GPU mode
  - Support Torchscript Model (Only Parameters are shown)
