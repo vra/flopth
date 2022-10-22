@@ -127,7 +127,7 @@ def compute_Conv3d_flops(module, inp, out):
 
 def compute_BatchNorm1d_flops(module, inp, out):
     assert isinstance(module, nn.BatchNorm1d)
-    assert len(inp.size()) == 3 and len(inp.size()) == len(out.size())
+    # assert len(inp.size()) == 3 and len(inp.size()) == len(out.size())
     batch_flops = np.prod(inp.shape)
     if module.affine:
         batch_flops *= 2
@@ -174,7 +174,7 @@ def compute_Pool2d_flops(module, inp, out):
 
 def compute_Linear_flops(module, inp, out):
     assert isinstance(module, nn.Linear)
-    assert len(inp.size()) == 2 and len(out.size()) == 2
+    # assert len(inp.size()) == 2 and len(out.size()) == 2
     batch_size = inp.size()[0]
     total_flops = batch_size * inp.size()[1] * out.size()[1]
     return cat_out(total_flops, inp, out)
