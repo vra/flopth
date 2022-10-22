@@ -29,6 +29,10 @@ def compute_flops(module, inp, out):
         return compute_Linear_flops(module, inp[0], out)
     elif isinstance(module, nn.Dropout):
         return cat_out(0, inp[0], out)
+    elif isinstance(module, nn.Sigmoid):
+        return cat_out(0, inp[0], out)
+    elif isinstance(module, nn.Hardtanh):
+        return cat_out(0, inp[0], out)
     else:
         print("Op {} is not supported at now.".format(module.__class__.__name__))
         return cat_out(0, inp[0], out)
