@@ -50,6 +50,7 @@ def parse_parameters():
         "--in_size",
         nargs="+",
         type=int,
+        default=[[3, 224, 224]],
         action="append",
         help="Input size of target net, without batch_size. "
         + "multiple inputs supported, e.g., -i 3 224 224 -i 3 112 112",
