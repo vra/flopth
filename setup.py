@@ -23,6 +23,7 @@ setup(
         "numpy",
         "tabulate",
         "torch",
+        "torchvision",
     ],
     scripts=[],
     entry_points={"console_scripts": ["flopth=flopth.__init__:main"]},
