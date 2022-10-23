@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 readme = open('README.md').read()
-version = open('version.txt', 'r').read().strip()
-print(version)
+#version = open('./version.txt', 'r').read().strip()
+#print(version)
 
 setup(
     name="flopth",
-    version=version,
+    version='0.1.2',
     keywords=("flopth", "Pytorch", "Flops", "Deep-learning"),
     description="A program to calculate FLOPs and Parameters of Pytorch models",
     long_description=readme,
