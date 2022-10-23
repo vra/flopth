@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
 
 readme = open('README.md').read()
-version = open('flopth/__version__.py', 'r').read().strip().split('= ')[1]
+version = open('version.txt', 'r').read().strip()
+print(version)
 
 setup(
     name="flopth",
