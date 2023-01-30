@@ -6,7 +6,7 @@ readme = open('README.md').read()
 
 setup(
     name="flopth",
-    version='0.1.2',
+    version='0.1.3',
     keywords=("flopth", "Pytorch", "Flops", "Deep-learning"),
     description="A program to calculate FLOPs and Parameters of Pytorch models",
     long_description=readme,
