@@ -40,7 +40,7 @@ def compute_flops(module, inp, out):
     elif isinstance(module, nn.Identity):
         return cat_out(0, inp[0], out)
     else:
-        print("Op {} is not supported at now.".format(module.__class__.__name__))
+        print("Op {} is not supported at now, set FLOPs of it to zero.".format(module.__class__.__name__))
         return cat_out(0, inp[0], out)
     pass
 
