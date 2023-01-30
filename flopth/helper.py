@@ -35,6 +35,8 @@ def compute_flops(module, inp, out):
         return cat_out(0, inp[0], out)
     elif isinstance(module, nn.Hardswish):
         return compute_Hardswich_flops(module, inp[0], out)
+    elif isinstance(module, nn.Hardsigmoid):
+        return compute_Hardsigmoid_flops(module, inp[0], out)
     else:
         print("Op {} is not supported at now.".format(module.__class__.__name__))
         return cat_out(0, inp[0], out)
@@ -201,3 +203,13 @@ def compute_Hardswich_flops(module, inp, out):
     # Here we use a estimated flops just like RELU
     total_flops = out.numel()
     return cat_out(total_flops, inp, out)
+
+
+def compute_Hardsigmoid_flops(module, inp, out):
+    """ Hardsigmoid: https://pytorch.org/docs/stable/generated/torch.nn.Hardsigmoid.html#torch.nn.Hardsigmoid
+    """
+    # Since the hardsigmoid function has different flops with different inputs,
+    # Here we use a estimated flops just like RELU
+    total_flops = out.numel()
+    return cat_out(total_flops, inp, out)
+
