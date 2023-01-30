@@ -33,6 +33,8 @@ def compute_flops(module, inp, out):
         return cat_out(0, inp[0], out)
     elif isinstance(module, nn.Hardtanh):
         return cat_out(0, inp[0], out)
+    elif isinstance(module, nn.Hardswish):
+        return compute_Hardswich_flops(module, inp[0], out)
     else:
         print("Op {} is not supported at now.".format(module.__class__.__name__))
         return cat_out(0, inp[0], out)
@@ -189,4 +191,13 @@ def compute_Upsample_flops(module, inp, out):
         output_elements_count *= s
 
     total_flops = output_elements_count
+    return cat_out(total_flops, inp, out)
+
+
+def compute_Hardswich_flops(module, inp, out):
+    """ hardswish: https://pytorch.org/docs/stable/generated/torch.nn.Hardswish.html#torch.nn.Hardswish
+    """
+    # Since the hardswish function has different flops with different inputs,
+    # Here we use a estimated flops just like RELU
+    total_flops = out.numel()
     return cat_out(total_flops, inp, out)
