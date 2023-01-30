@@ -13,7 +13,7 @@ def compute_flops(module, inp, out):
         return compute_Conv3d_flops(module, inp[0], out)
     elif isinstance(module, nn.BatchNorm1d):
         return compute_BatchNorm1d_flops(module, inp[0], out)
-    elif isinstance(module, nn.BatchNorm2d):
+    elif isinstance(module, (nn.BatchNorm2d, nn.LayerNorm, nn.GroupNorm, nn.InstanceNorm1d, nn.InstanceNorm2d, nn.InstanceNorm3d)):
         return compute_BatchNorm2d_flops(module, inp[0], out)
     elif isinstance(module, nn.BatchNorm3d):
         return compute_BatchNorm3d_flops(module, inp[0], out)
@@ -141,10 +141,10 @@ def compute_BatchNorm1d_flops(module, inp, out):
 
 
 def compute_BatchNorm2d_flops(module, inp, out):
-    assert isinstance(module, nn.BatchNorm2d)
-    assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
+#    assert isinstance(module, nn.BatchNorm2d)
+#    assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
     batch_flops = np.prod(inp.shape)
-    if module.affine:
+    if hasattr(module, 'affine') and module.affine:
         batch_flops *= 2
     # return batch_flops
     return cat_out(batch_flops, inp, out)
