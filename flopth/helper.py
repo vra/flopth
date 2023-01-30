@@ -37,6 +37,8 @@ def compute_flops(module, inp, out):
         return compute_Hardswich_flops(module, inp[0], out)
     elif isinstance(module, nn.Hardsigmoid):
         return compute_Hardsigmoid_flops(module, inp[0], out)
+    elif isinstance(module, nn.Identity):
+        return cat_out(0, inp[0], out)
     else:
         print("Op {} is not supported at now.".format(module.__class__.__name__))
         return cat_out(0, inp[0], out)
