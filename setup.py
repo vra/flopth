@@ -1,17 +1,16 @@
 from setuptools import setup, find_packages
 
-readme = open('README.md').read()
-#version = open('./version.txt', 'r').read().strip()
-#print(version)
+readme = open("README.md").read()
+# version = open('./version.txt', 'r').read().strip()
+# print(version)
 
 setup(
     name="flopth",
-    version='0.1.3',
+    version="0.1.3",
     keywords=("flopth", "Pytorch", "Flops", "Deep-learning"),
     description="A program to calculate FLOPs and Parameters of Pytorch models",
     long_description=readme,
     long_description_content_type="text/markdown",
-
     license="MIT Licence",
     url="https://github.com/vra/flopth",
     author="Yunfeng Wang",

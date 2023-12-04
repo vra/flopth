@@ -85,12 +85,22 @@ class ModelViewer:
     def obtain_conv_info(self, module):
         """如果是conv层，返回kernel_size, padding和stride，否则返回空"""
         info = ""
-        if isinstance(module, (nn.Conv1d, nn.Conv2d, nn.Conv3d, nn.ConvTranspose1d, nn.ConvTranspose2d, nn.ConvTranspose3d)):
+        if isinstance(
+            module,
+            (
+                nn.Conv1d,
+                nn.Conv2d,
+                nn.Conv3d,
+                nn.ConvTranspose1d,
+                nn.ConvTranspose2d,
+                nn.ConvTranspose3d,
+            ),
+        ):
             # 获取参数
             kernel_size = module.kernel_size
             padding = module.padding
             stride = module.stride
-            info = f'k={kernel_size}, p={padding}, s={stride}'
+            info = f"k={kernel_size}, p={padding}, s={stride}"
         return info
 
     def show_info(self, show_detail=True):

@@ -13,7 +13,17 @@ def compute_flops(module, inp, out):
         return compute_Conv3d_flops(module, inp[0], out)
     elif isinstance(module, nn.BatchNorm1d):
         return compute_BatchNorm1d_flops(module, inp[0], out)
-    elif isinstance(module, (nn.BatchNorm2d, nn.LayerNorm, nn.GroupNorm, nn.InstanceNorm1d, nn.InstanceNorm2d, nn.InstanceNorm3d)):
+    elif isinstance(
+        module,
+        (
+            nn.BatchNorm2d,
+            nn.LayerNorm,
+            nn.GroupNorm,
+            nn.InstanceNorm1d,
+            nn.InstanceNorm2d,
+            nn.InstanceNorm3d,
+        ),
+    ):
         return compute_BatchNorm2d_flops(module, inp[0], out)
     elif isinstance(module, nn.BatchNorm3d):
         return compute_BatchNorm3d_flops(module, inp[0], out)
@@ -21,7 +31,10 @@ def compute_flops(module, inp, out):
         module, (nn.AvgPool2d, nn.MaxPool2d, nn.AdaptiveAvgPool2d, nn.AdaptiveMaxPool2d)
     ):
         return compute_Pool2d_flops(module, inp[0], out)
-    elif isinstance(module, (nn.ReLU, nn.ReLU6, nn.PReLU, nn.ELU, nn.LeakyReLU, nn.GELU, nn.CELU, nn.SELU)):
+    elif isinstance(
+        module,
+        (nn.ReLU, nn.ReLU6, nn.PReLU, nn.ELU, nn.LeakyReLU, nn.GELU, nn.CELU, nn.SELU),
+    ):
         return compute_ReLU_flops(module, inp[0], out)
     elif isinstance(module, nn.Upsample):
         return compute_Upsample_flops(module, inp[0], out)
@@ -40,7 +53,11 @@ def compute_flops(module, inp, out):
     elif isinstance(module, nn.Identity):
         return cat_out(0, inp[0], out)
     else:
-        print("Op {} is not supported at now, set FLOPs of it to zero.".format(module.__class__.__name__))
+        print(
+            "Op {} is not supported at now, set FLOPs of it to zero.".format(
+                module.__class__.__name__
+            )
+        )
         return cat_out(0, inp[0], out)
     pass
 
@@ -141,10 +158,10 @@ def compute_BatchNorm1d_flops(module, inp, out):
 
 
 def compute_BatchNorm2d_flops(module, inp, out):
-#    assert isinstance(module, nn.BatchNorm2d)
-#    assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
+    #    assert isinstance(module, nn.BatchNorm2d)
+    #    assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
     batch_flops = np.prod(inp.shape)
-    if hasattr(module, 'affine') and module.affine:
+    if hasattr(module, "affine") and module.affine:
         batch_flops *= 2
     # return batch_flops
     return cat_out(batch_flops, inp, out)
@@ -161,7 +178,10 @@ def compute_BatchNorm3d_flops(module, inp, out):
 
 
 def compute_ReLU_flops(module, inp, out):
-    assert isinstance(module, (nn.ReLU, nn.ReLU6, nn.PReLU, nn.ELU, nn.LeakyReLU, nn.GELU, nn.CELU, nn.SELU))
+    assert isinstance(
+        module,
+        (nn.ReLU, nn.ReLU6, nn.PReLU, nn.ELU, nn.LeakyReLU, nn.GELU, nn.CELU, nn.SELU),
+    )
     batch_size = inp.size()[0]
     active_elements_count = batch_size
 
@@ -199,8 +219,7 @@ def compute_Upsample_flops(module, inp, out):
 
 
 def compute_Hardswich_flops(module, inp, out):
-    """ hardswish: https://pytorch.org/docs/stable/generated/torch.nn.Hardswish.html#torch.nn.Hardswish
-    """
+    """hardswish: https://pytorch.org/docs/stable/generated/torch.nn.Hardswish.html#torch.nn.Hardswish"""
     # Since the hardswish function has different flops with different inputs,
     # Here we use a estimated flops just like RELU
     total_flops = out.numel()
@@ -208,10 +227,8 @@ def compute_Hardswich_flops(module, inp, out):
 
 
 def compute_Hardsigmoid_flops(module, inp, out):
-    """ Hardsigmoid: https://pytorch.org/docs/stable/generated/torch.nn.Hardsigmoid.html#torch.nn.Hardsigmoid
-    """
+    """Hardsigmoid: https://pytorch.org/docs/stable/generated/torch.nn.Hardsigmoid.html#torch.nn.Hardsigmoid"""
     # Since the hardsigmoid function has different flops with different inputs,
     # Here we use a estimated flops just like RELU
     total_flops = out.numel()
     return cat_out(total_flops, inp, out)
-
