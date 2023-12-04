@@ -2,6 +2,7 @@
 import numpy as np
 from tabulate import tabulate
 import torch
+import torch.nn as nn
 
 from flopth.helper import compute_flops
 from flopth.utils import divide_by_unit
@@ -21,6 +22,11 @@ class ModelViewer:
                 input_list[i] = input_list[i].cuda()
 
             self._model = self._model.cuda()
+        else:
+            device = next(self._model.parameters()).device
+            for i in range(len(input_list)):
+                input_list[i] = input_list[i].to(device)
+
         self._model.eval()
         self._model(*input_list)
 
@@ -76,6 +82,17 @@ class ModelViewer:
                 self.forward_funcs[m.__class__] = m.__class__.__call__
                 m.__class__.__call__ = forward_with_hook
 
+    def obtain_conv_info(self, module):
+        """如果是conv层，返回kernel_size, padding和stride，否则返回空"""
+        info = ""
+        if isinstance(module, (nn.Conv1d, nn.Conv2d, nn.Conv3d, nn.ConvTranspose1d, nn.ConvTranspose2d, nn.ConvTranspose3d)):
+            # 获取参数
+            kernel_size = module.kernel_size
+            padding = module.padding
+            stride = module.stride
+            info = f'k={kernel_size}, p={padding}, s={stride}'
+        return info
+
     def show_info(self, show_detail=True):
         sum_flops = torch.zeros((1), dtype=torch.int64)
         if torch.cuda.is_available():
@@ -100,6 +117,7 @@ class ModelViewer:
             info = []
             for m, n in zip(self.leaf_modules, self.leaf_module_names):
                 param = sum(np.prod(v.size()) for v in m.parameters())
+                conv_info = self.obtain_conv_info(m)
                 m_type = (
                     str(type(m))
                     .split(">")[0]
@@ -133,6 +151,7 @@ class ModelViewer:
                         m_type,
                         in_shape_str,
                         out_shape_str,
+                        conv_info,
                         divide_by_unit(param),
                         "{:.6}%".format(param / sum_params * 100)
                         if sum_params > 0
@@ -153,6 +172,7 @@ class ModelViewer:
                         "module_type",
                         "in_shape",
                         "out_shape",
+                        "kernel_size,padding,stride",
                         "params",
                         "params_percent",
                         "params_percent_vis",
