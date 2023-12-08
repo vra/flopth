@@ -5,11 +5,11 @@ import torch.nn as nn
 
 
 def compute_flops(module, inp, out):
-    if isinstance(module, nn.Conv1d):
+    if isinstance(module, (nn.Conv1d, nn.ConvTranspose1d)):
         return compute_Conv1d_flops(module, inp[0], out)
-    if isinstance(module, nn.Conv2d):
+    if isinstance(module, (nn.Conv2d, nn.ConvTranspose2d)):
         return compute_Conv2d_flops(module, inp[0], out)
-    if isinstance(module, nn.Conv3d):
+    if isinstance(module, (nn.Conv3d, nn.ConvTranspose3d)):
         return compute_Conv3d_flops(module, inp[0], out)
     elif isinstance(module, nn.BatchNorm1d):
         return compute_BatchNorm1d_flops(module, inp[0], out)
@@ -75,7 +75,6 @@ def cat_out(total_flops, inp, out):
 
 def compute_Conv1d_flops(module, inp, out):
     # Can have multiple inputs, getting the first one
-    assert isinstance(module, nn.Conv1d)
     assert len(inp.size()) == 3 and len(inp.size()) == len(out.size())
 
     batch_size = inp.size()[0]
@@ -100,7 +99,6 @@ def compute_Conv1d_flops(module, inp, out):
 
 def compute_Conv2d_flops(module, inp, out):
     # Can have multiple inputs, getting the first one
-    assert isinstance(module, nn.Conv2d)
     assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
 
     batch_size = inp.size()[0]
@@ -125,7 +123,6 @@ def compute_Conv2d_flops(module, inp, out):
 
 def compute_Conv3d_flops(module, inp, out):
     # Can have multiple inputs, getting the first one
-    assert isinstance(module, nn.Conv3d)
     assert len(inp.size()) == 5 and len(inp.size()) == len(out.size())
 
     batch_size = inp.size()[0]
