@@ -50,6 +50,8 @@ def compute_flops(module, inp, out):
         return compute_Hardswich_flops(module, inp[0], out)
     elif isinstance(module, nn.Hardsigmoid):
         return compute_Hardsigmoid_flops(module, inp[0], out)
+    elif isinstance(module, nn.Tanh):
+        return compute_Tanh_flops(module, inp[0], out)
     elif isinstance(module, nn.Identity):
         return cat_out(0, inp[0], out)
     else:
@@ -188,6 +190,16 @@ def compute_ReLU_flops(module, inp, out):
     # return active_elements_count
     return cat_out(active_elements_count, inp, out)
 
+
+def compute_Tanh_flops(module, inp, out):
+    batch_size = inp.size()[0]
+    active_elements_count = batch_size
+
+    for s in inp.size()[1:]:
+        active_elements_count *= s
+
+    # return active_elements_count
+    return cat_out(active_elements_count, inp, out)
 
 def compute_Pool2d_flops(module, inp, out):
     assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
