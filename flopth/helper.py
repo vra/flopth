@@ -1,4 +1,5 @@
 """ Useful tools. Stolen from here: https://github.com/Swall0w/torchstat"""
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -200,6 +201,7 @@ def compute_Tanh_flops(module, inp, out):
 
     # return active_elements_count
     return cat_out(active_elements_count, inp, out)
+
 
 def compute_Pool2d_flops(module, inp, out):
     assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())

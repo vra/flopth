@@ -1,4 +1,5 @@
 """ Main file to calculate information of a pytorch model. """
+
 import numpy as np
 from tabulate import tabulate
 import torch
@@ -163,14 +164,18 @@ class ModelViewer:
                         out_shape_str,
                         conv_info,
                         divide_by_unit(param),
-                        "{:.6}%".format(param / sum_params * 100)
-                        if sum_params > 0
-                        else "",
+                        (
+                            "{:.6}%".format(param / sum_params * 100)
+                            if sum_params > 0
+                            else ""
+                        ),
                         "#" * int(param / sum_params * 50) if sum_params > 0 else "",
                         divide_by_unit(flops),
-                        "{:.6}%".format(flops / sum_flops * 100)
-                        if sum_flops > 0
-                        else "",
+                        (
+                            "{:.6}%".format(flops / sum_flops * 100)
+                            if sum_flops > 0
+                            else ""
+                        ),
                         "#" * int(flops / sum_flops * 50) if sum_flops > 0 else "",
                     ]
                 )
